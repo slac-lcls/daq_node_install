@@ -1,0 +1,33 @@
+Items that needed changing after the BIOS upgrade in SRCF:
+
+    Boot Feature: Restore on AC Power Loss:           Stay Off
+    Boot Feature: Power Button Function:              4 Seconds Override
+    CPU Configuration: SMT Control:                   Disabled
+    PCI... Config.: ... Slot 1 ... Bifurcation:       x8x8
+    Supermicro ... Enet Ctrlr A: DevCfgMenu: Number of VFs per PF:     8
+    Supermicro ... Enet Ctrlr A: DevCfgMenu: Energy Eff. Enet:         Disabled
+    Supermicro ... Enet Ctrlr A: DevCfgMenu: DCB Protocol:             Enabled (IEEE Only)
+    Supermicro ... Enet Ctrlr A: MBACfgMenu: Legacy Boot Protocol:     PXE
+    Supermicro ... Enet Ctrlr A: MBACfgMenu: Pre-boot Wake On LAN:     Enabled
+    Supermicro ... Enet Ctrlr B: DevCfgMenu: Number of VFs per PF:     8
+    Supermicro ... Enet Ctrlr B: DevCfgMenu: Energy Eff. Enet:         Disabled
+    Supermicro ... Enet Ctrlr B: DevCfgMenu: DCB Protocol:             Enabled (IEEE Only)
+    Supermicro ... Enet Ctrlr B: MBACfgMenu: Legacy Boot Protocol:     PXE
+    Supermicro ... Enet Ctrlr B: MBACfgMenu: Pre-boot Wake On LAN:     Enabled
+
+    Boot options on the Boot tab:
+    - Go into 'UEFI NETWORK Drive BBS Priorities'
+      - Probably need to scroll to the bottom
+      - Move the IB option to be last
+    - Go back to the Boot options and change the options to:
+
+    UEFI USB Key
+    UEFI Hard Disk: RedHat Boot Manager
+    UEFI Network:(B198/D0/F0): UEFI PXE IPv4 Supermicro (First Ethernet Controller)
+    Set remaining options to 'Disabled'
+
+- After boot:
+  . ~/lclsii/daq/lcls2/setup_env.sh
+  cd ~/lclsii/package/cameralink-gateway/software/
+  python scripts/updatePcieFpga.py --path ~weaver/mcs --type SPIx8 --dev /dev/datadev_1
+  python scripts/updatePcieFpga.py --path ~/lclsii/daq/firmware/mcs/ --type SPIx8 --dev /dev/datadev_1
